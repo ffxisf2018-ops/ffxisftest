@@ -5,13 +5,10 @@ on:
     - cron: '12,22,32 0 * * *' 
   workflow_dispatch: # 保持保留，方便手动测试
 
-concurrency:
-  group: ${{ github.workflow }}          # 或使用更固定的名称
-  cancel-in-progress: true               # 关键：取消正在运行的旧实例
-
 jobs:
   check-service:
     runs-on: ubuntu-latest
+    timeout-minutes: 360
     steps:
     - name: setup cloudflared
       uses: AnimMouse/setup-cloudflared@v2
@@ -35,6 +32,7 @@ jobs:
   notify:
     needs: [check-service] 
     runs-on: ubuntu-latest
+    timeout-minutes: 360
     steps:
     - name: setup cloudflared
       uses: AnimMouse/setup-cloudflared@v2
